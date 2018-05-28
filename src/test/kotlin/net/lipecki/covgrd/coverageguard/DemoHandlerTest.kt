@@ -13,8 +13,8 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
 @RunWith(SpringRunner::class)
-@WebFluxTest
-@Import(DemoRouting::class, DemoHandler::class)
+@WebFluxTest(DemoHandler::class)
+@Import(DemoRouting::class)
 class DemoHandlerTest {
 
     @Autowired
@@ -35,7 +35,7 @@ class DemoHandlerTest {
                 .expectStatus().isOk
                 .expectBody(String::class.java).returnResult().responseBody
 
-        assertThat(result).isEqualTo(expectedMessage);
+        assertThat(result).isEqualTo(expectedMessage)
     }
 
 }

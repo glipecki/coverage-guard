@@ -10,13 +10,16 @@ data class ImportRequest(val file: FilePart, val format: String)
 
 @RestController
 @RequestMapping("/report")
-class ImportReportController {
+class ImportReportController(val reportParserFactory: ReportFormatParserFactory, val importReportCommand: ImportReportCommand) {
 
     val log by logger()
 
     @PostMapping
     fun addReport(importRequest: ImportRequest) {
         log.info("Request to import Coverage report [import={}]", importRequest)
+        val parser = reportParserFactory.getParser(importRequest.format)
+        val parsedReport = parser.parse(importRequest.file)
+        importReportCommand.import(parsedReport)
         // add report with parser based on report format
     }
 
