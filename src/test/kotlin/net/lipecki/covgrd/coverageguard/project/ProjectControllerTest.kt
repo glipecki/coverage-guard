@@ -1,9 +1,9 @@
 package net.lipecki.covgrd.coverageguard.project
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.BDDMockito
+import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -23,14 +23,14 @@ class ProjectControllerTest {
 
     @Test
     fun `should get projects from repository`() {
-        BDDMockito.given(projectRepository.findAll()).willReturn(Flux.just(Project()));
+        given(projectRepository.findAll()).willReturn(Flux.just(Project()));
 
         client.get()
                 .uri("/project")
                 .exchange()
                 .expectStatus().isOk
                 .expectBodyList(Project::class.java).returnResult().apply {
-                    Assertions.assertThat(responseBody).hasSize(1)
+                    assertThat(responseBody).hasSize(1)
                 }
     }
 
