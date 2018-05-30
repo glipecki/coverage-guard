@@ -1,5 +1,6 @@
-package net.lipecki.covgrd.coverageguard.report.import
+package net.lipecki.covgrd.coverageguard.report.add
 
+import net.lipecki.covgrd.coverageguard.report.Report
 import org.springframework.stereotype.Component
 
 @Component

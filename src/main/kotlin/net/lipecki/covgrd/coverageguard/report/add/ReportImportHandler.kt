@@ -1,8 +1,7 @@
-package net.lipecki.covgrd.coverageguard.report.import
+package net.lipecki.covgrd.coverageguard.report.add
 
 import net.lipecki.covgrd.coverageguard.logger
-import org.springframework.core.ResolvableType
-import org.springframework.core.codec.StringDecoder
+import net.lipecki.covgrd.coverageguard.report.ReportRepository
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.http.codec.multipart.FormFieldPart
 import org.springframework.stereotype.Component
@@ -14,20 +13,17 @@ import reactor.core.publisher.Mono
 private data class ImportReportRequest(val file: FilePart, val format: String)
 
 @Component
-class ReportImportHandler {
+class ReportImportHandler(val reportFormatParserFactory: ReportFormatParserFactory, val reportRepository: ReportRepository) {
 
     val log by logger()
 
     fun importReport(request: ServerRequest): Mono<ServerResponse> {
         return request
                 .body(BodyExtractors.toMultipartData())
+                // TODO: walidacja parametrów
                 .map { ImportReportRequest(it.getFirst("file") as FilePart, (it.getFirst("format") as FormFieldPart).value()) }
-                .doOnNext { log.info("Request to import Coverage report [report={}]", it.file) }
-//                .map {
-//                    StringDecoder
-//                            .textPlainOnly()
-//                            .decode(it.file.content(), ResolvableType.NONE, null, null)
-//                }
+                .doOnNext { log.info("Request to import Coverage report [report={}, format={}]", it.file.filename(), it.format) }
+                .map { reportFormatParserFactory.getParser(it.format).parse(it.file) }
                 .map {  }
                 .flatMap { ServerResponse.ok().build() }
     }
