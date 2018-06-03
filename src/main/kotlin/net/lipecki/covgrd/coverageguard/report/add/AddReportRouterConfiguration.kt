@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.router
 
 @Configuration
-class ReportImportRouterConfiguration {
+class AddReportRouterConfiguration {
 
     @Bean
-    fun reportImportRouter(reportImportHandler: ReportImportHandler) = router {
-        ("/report/import").nest {
+    fun addReportRoute(reportImportHandler: AddReportHandler) = router {
+        ("/report/add").nest {
             POST("", reportImportHandler::importReport)
         }
     }
