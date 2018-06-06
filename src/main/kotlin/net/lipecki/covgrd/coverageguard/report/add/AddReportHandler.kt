@@ -13,7 +13,12 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
-private data class AddReportRequest(val project: String, val file: FilePart, val format: String)
+private data class AddReportRequest(
+        val project: String,
+        val branch: String,
+        val file: FilePart,
+        val format: String
+)
 
 @Component
 class AddReportHandler(val addReportService: AddReportService) {
@@ -26,12 +31,13 @@ class AddReportHandler(val addReportService: AddReportService) {
                 .map {
                     AddReportRequest(
                             getRequiredParam<FormFieldPart>(it, "project").value(),
+                            getRequiredParam<FormFieldPart>(it, "branch").value(),
                             getRequiredParam(it, "file"),
                             getRequiredParam<FormFieldPart>(it, "format").value()
                     )
                 }
                 .doOnNext { log.info("Request to import Coverage report [report={}, format={}]", it.file.filename(), it.format) }
-                .map { addReportService.addReport(it.project, it.file.content(), it.format) }
+                .map { addReportService.addReport(it.project, it.branch, it.file.content(), it.format) }
                 .flatMap { ServerResponse.ok().body(it, String::class.java) }
                 .doOnError { log.error("Can't handle method report add", it) }
     }

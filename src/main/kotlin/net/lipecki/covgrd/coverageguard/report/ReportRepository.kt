@@ -4,4 +4,4 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.stereotype.Component
 
 @Component
-interface ReportRepository : ReactiveMongoRepository<ClassCoverageDocument, String>
+interface ReportRepository : ReactiveMongoRepository<CoverageReport, String>

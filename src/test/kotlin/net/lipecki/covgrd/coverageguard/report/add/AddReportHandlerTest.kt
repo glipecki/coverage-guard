@@ -100,6 +100,7 @@ class AddReportHandlerTest {
         body.part("project", project)
         given(service.addReport(
                 any(),
+                any(),
                 capture(contentCaptor),
                 eq(format)
         )).willReturn(Mono.just(expectedResult))

@@ -38,8 +38,8 @@ class JacocoXmlReportParserTest {
     private fun expectedClassReport(): ClassCoverage {
         return ClassCoverage(
                 groupName = "base-model",
-                packageName = "net/lipecki/validation",
-                className = "net/lipecki/validation/WhiteSymbolsAllowedValidator",
+                packageName = "net.lipecki.validation",
+                className = "WhiteSymbolsAllowedValidator",
                 coverage = CoverageStat(
                         instructionStat = CoverageStatValue(
                                 covered = 0,

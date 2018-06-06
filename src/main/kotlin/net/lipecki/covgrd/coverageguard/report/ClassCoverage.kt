@@ -6,4 +6,6 @@ data class ClassCoverage(
         val className: String,
         val coverage: CoverageStat,
         val methods: List<MethodCoverage>
-)
+) {
+    val qualifiedName: String = "$groupName:$packageName.$className"
+}

@@ -5,7 +5,7 @@ import net.lipecki.covgrd.coverageguard.report.ClassCoverage
 import net.lipecki.covgrd.coverageguard.report.CoverageStat
 import net.lipecki.covgrd.coverageguard.report.CoverageStatValue
 import net.lipecki.covgrd.coverageguard.report.MethodCoverage
-import net.lipecki.covgrd.coverageguard.report.add.*
+import net.lipecki.covgrd.coverageguard.report.add.ReportParser
 import org.springframework.core.ResolvableType
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder
@@ -34,12 +34,16 @@ class JacocoXmlReportParser : ReportParser {
     private fun mapPackage(classPackage: PackageXml, group: GroupXml) = classPackage.classes.map {
         ClassCoverage(
                 groupName = group.name,
-                className = it.name,
-                packageName = classPackage.name,
+                className = stripToLastSegment(normalizeSegmentSeparator(it.name)),
+                packageName = normalizeSegmentSeparator(classPackage.name),
                 coverage = mapCoverage(it.counters),
                 methods = mapMethods(it)
         )
     }
+
+    private fun normalizeSegmentSeparator(string: String) = string.replace('/', '.')
+
+    private fun stripToLastSegment(string: String) = string.substringAfterLast(".")
 
     private fun mapMethods(classReport: ClassXml) = classReport.methods.map {
         MethodCoverage(
