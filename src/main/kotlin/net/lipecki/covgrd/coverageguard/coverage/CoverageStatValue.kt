@@ -1,4 +1,4 @@
-package net.lipecki.covgrd.coverageguard.report
+package net.lipecki.covgrd.coverageguard.coverage
 
 data class CoverageStatValue(
         val covered: Int,

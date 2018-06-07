@@ -1,7 +1,7 @@
 package net.lipecki.covgrd.coverageguard.report.add
 
-import net.lipecki.covgrd.coverageguard.report.ClassCoverage
-import net.lipecki.covgrd.coverageguard.report.CoverageReport
+import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
+import net.lipecki.covgrd.coverageguard.report.ClassCoverageReport
 import net.lipecki.covgrd.coverageguard.report.ReportRepository
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.stereotype.Component
@@ -26,7 +26,7 @@ class AddReportService(val reportParserFactory: ReportParserFactory, val reportR
                 .map { reportUuid }
     }
 
-    private fun asDocument(project: String, branch: String, reportUuid: String, reportDate: Date, it: ClassCoverage): CoverageReport = CoverageReport(
+    private fun asDocument(project: String, branch: String, reportUuid: String, reportDate: Date, it: ClassCoverage): ClassCoverageReport = ClassCoverageReport(
             project = project,
             branch = branch,
             reportUuid = reportUuid,

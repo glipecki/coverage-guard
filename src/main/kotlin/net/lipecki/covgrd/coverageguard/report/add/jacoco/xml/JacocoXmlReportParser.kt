@@ -1,10 +1,10 @@
 package net.lipecki.covgrd.coverageguard.report.add.jacoco.xml
 
 import net.lipecki.covgrd.coverageguard.logger
-import net.lipecki.covgrd.coverageguard.report.ClassCoverage
-import net.lipecki.covgrd.coverageguard.report.CoverageStat
-import net.lipecki.covgrd.coverageguard.report.CoverageStatValue
-import net.lipecki.covgrd.coverageguard.report.MethodCoverage
+import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
+import net.lipecki.covgrd.coverageguard.coverage.CoverageStat
+import net.lipecki.covgrd.coverageguard.coverage.CoverageStatValue
+import net.lipecki.covgrd.coverageguard.coverage.MethodCoverage
 import net.lipecki.covgrd.coverageguard.report.add.ReportParser
 import org.springframework.core.ResolvableType
 import org.springframework.core.io.buffer.DataBuffer

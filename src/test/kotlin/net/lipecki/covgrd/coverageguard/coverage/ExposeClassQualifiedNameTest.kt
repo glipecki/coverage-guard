@@ -1,8 +1,5 @@
-package net.lipecki.covgrd.coverageguard.report.add
+package net.lipecki.covgrd.coverageguard.coverage
 
-import net.lipecki.covgrd.coverageguard.report.ClassCoverage
-import net.lipecki.covgrd.coverageguard.report.CoverageStat
-import net.lipecki.covgrd.coverageguard.report.CoverageStatValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

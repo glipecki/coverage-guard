@@ -31,7 +31,7 @@ class AddReportHandler(val addReportService: AddReportService) {
                 .map {
                     AddReportRequest(
                             getRequiredParam<FormFieldPart>(it, "project").value(),
-                            getRequiredParam<FormFieldPart>(it, "branch").value(),
+                            getOptionalParam<FormFieldPart>(it, "branch")?.value() ?: "master",
                             getRequiredParam(it, "file"),
                             getRequiredParam<FormFieldPart>(it, "format").value()
                     )
@@ -44,6 +44,15 @@ class AddReportHandler(val addReportService: AddReportService) {
 
     private inline fun <reified T : Part> getRequiredParam(map: MultiValueMap<String, Part>, name: String): T {
         val param = map.getFirst(name) ?: throw missingParam(name)
+        if (param is T) {
+            return param
+        } else {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong parameter type for param: $name")
+        }
+    }
+
+    private inline fun <reified T : Part> getOptionalParam(map: MultiValueMap<String, Part>, name: String): T? {
+        val param = map.getFirst(name) ?: return null
         if (param is T) {
             return param
         } else {

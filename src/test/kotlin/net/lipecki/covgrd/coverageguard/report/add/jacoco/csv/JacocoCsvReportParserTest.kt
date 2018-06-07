@@ -1,8 +1,8 @@
 package net.lipecki.covgrd.coverageguard.report.add.jacoco.csv
 
-import net.lipecki.covgrd.coverageguard.report.ClassCoverage
-import net.lipecki.covgrd.coverageguard.report.CoverageStat
-import net.lipecki.covgrd.coverageguard.report.CoverageStatValue
+import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
+import net.lipecki.covgrd.coverageguard.coverage.CoverageStat
+import net.lipecki.covgrd.coverageguard.coverage.CoverageStatValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.core.io.ClassPathResource
