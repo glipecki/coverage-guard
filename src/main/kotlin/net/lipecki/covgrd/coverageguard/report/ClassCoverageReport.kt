@@ -8,7 +8,7 @@ import java.util.*
 const val ClassCoverageReportCollection = "classCoverageReports"
 
 @Document(collection = ClassCoverageReportCollection)
-class ClassCoverageReport(
+data class ClassCoverageReport(
         @Id var id: String? = null,
         val project: String,
         val branch: String,

@@ -9,8 +9,8 @@ class AddReportRouterConfiguration {
 
     @Bean
     fun addReportRoute(reportImportHandler: AddReportHandler) = router {
-        ("/report/add").nest {
-            POST("", reportImportHandler::importReport)
+        ("/report").nest {
+            POST("/add", reportImportHandler::importReport)
         }
     }
 
