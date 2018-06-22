@@ -1,20 +1,27 @@
 package net.lipecki.covgrd.coverageguard.classmonitor
 
 import net.lipecki.covgrd.coverageguard.consumer.ConsumerRepository
-import net.lipecki.covgrd.coverageguard.report.ClassCoverageReportRepository
+import net.lipecki.covgrd.coverageguard.consumer.ConsumerRepositoryExtended
+import net.lipecki.covgrd.coverageguard.report.ReportRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.concurrent.Executor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-
-
+import java.util.concurrent.Executor
 
 @Configuration
 class ClassCoverageMonitorConfiguration {
 
     @Bean
-    fun classCoverageMonitorService(consumerRepository: ConsumerRepository, reportRepository: ClassCoverageReportRepository)
-            = ClassCoverageMonitorService(consumerRepository, reportRepository, classCoverageMonitorSyncExecutor())
+    fun classCoverageMonitorService(
+            consumerRepository: ConsumerRepository,
+            consumerRepositoryExtended: ConsumerRepositoryExtended,
+            reportRepository: ReportRepository
+    ) = ClassCoverageMonitorService(
+            consumerRepository,
+            consumerRepositoryExtended,
+            reportRepository,
+            classCoverageMonitorSyncExecutor()
+    )
 
     @Bean
     fun classCoverageMonitorSyncExecutor(): Executor {

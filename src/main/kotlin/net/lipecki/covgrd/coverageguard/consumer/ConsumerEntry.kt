@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document(collection = "consumers")
 data class ConsumerEntry(
         @Id var id: String? = null,
-        val type: String,
-        val refType: String,
+        val consumerType: String,
+        val refCollection: String,
         val refId: String,
         val state: String
 )
