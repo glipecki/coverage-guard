@@ -1,9 +1,9 @@
 package net.lipecki.covgrd.coverageguard.consumer
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 import reactor.core.publisher.Mono
 
-interface ConsumerRepository : ReactiveMongoRepository<ConsumerEntry, String> {
+interface ConsumerRepository : MongoRepository<ConsumerEntry, String> {
 
     fun countByConsumerTypeAndRefCollection(type: String, refCollection: String): Mono<Long>
 

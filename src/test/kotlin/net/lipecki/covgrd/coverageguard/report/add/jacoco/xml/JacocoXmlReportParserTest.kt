@@ -23,10 +23,10 @@ class JacocoXmlReportParserTest {
         val sourceXml = parseXml("reports/one-class-report.xml")
 
         // when
-        val report = parser.parse(sourceXml).blockFirst()
+        val report = parser.parse(sourceXml)
 
         // then
-        assertThat(report).isEqualTo(expectedClassReport())
+        assertThat(report[0]).isEqualTo(expectedClassReport())
     }
 
     private fun parseXml(fileName: String): Flux<DataBuffer> = DataBufferUtils.readInputStream({ ClassPathResource(fileName).inputStream }, DefaultDataBufferFactory(), 100)

@@ -11,6 +11,7 @@ import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
+import java.io.InputStream
 
 @Component
 class JacocoXmlReportParser : ReportParser {
@@ -19,7 +20,7 @@ class JacocoXmlReportParser : ReportParser {
 
     override fun getFormatName(): String = "jacoco/xml"
 
-    override fun parse(content: Flux<DataBuffer>): Flux<ClassCoverage> {
+    override fun parse(content: InputStream): List<ClassCoverage> {
         return Jaxb2XmlDecoder()
                 .decode(content, ResolvableType.forType(ReportXml::class.java), null, null)
                 .map { it as ReportXml }

@@ -1,5 +1,6 @@
 package net.lipecki.covgrd.coverageguard.report.add.jacoco.csv
 
+import jdk.internal.util.xml.impl.Input
 import net.lipecki.covgrd.coverageguard.logger
 import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
 import net.lipecki.covgrd.coverageguard.coverage.CoverageStat
@@ -10,6 +11,7 @@ import org.springframework.core.codec.StringDecoder
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
+import java.io.InputStream
 
 @Component
 class JacocoCsvReportParser : ReportParser {
@@ -18,7 +20,7 @@ class JacocoCsvReportParser : ReportParser {
 
     override fun getFormatName(): String = "jacoco/csv"
 
-    override fun parse(content: Flux<DataBuffer>): Flux<ClassCoverage> = StringDecoder.textPlainOnly()
+    override fun parse(content: InputStream): List<ClassCoverage> = StringDecoder.textPlainOnly()
             .decode(content, ResolvableType.NONE, null, null)
             .skip(1)
             .map { it.split(",") }

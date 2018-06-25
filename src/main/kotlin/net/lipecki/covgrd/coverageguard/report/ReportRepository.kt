@@ -1,5 +1,5 @@
 package net.lipecki.covgrd.coverageguard.report
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface ReportRepository : ReactiveMongoRepository<Report, String>
+interface ReportRepository : MongoRepository<Report, String>

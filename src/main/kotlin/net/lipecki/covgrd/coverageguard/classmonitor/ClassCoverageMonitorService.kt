@@ -2,7 +2,7 @@ package net.lipecki.covgrd.coverageguard.classmonitor
 
 import net.lipecki.covgrd.coverageguard.consumer.*
 import net.lipecki.covgrd.coverageguard.logger
-import net.lipecki.covgrd.coverageguard.report.ClassCoverageReportCollection
+import net.lipecki.covgrd.coverageguard.coverage.ClassCoverageReportCollection
 import net.lipecki.covgrd.coverageguard.report.ReportCollection
 import net.lipecki.covgrd.coverageguard.report.ReportRepository
 import reactor.core.publisher.Mono
@@ -19,7 +19,7 @@ class ClassCoverageMonitorService(
 
     private val log by logger()
 
-    override fun getConsumerStatus(): Mono<ConsumerStatus> = Mono
+    override fun getConsumerStatus(): ConsumerStatus = Mono
             .zip(
                     consumerRepository.countByConsumerTypeAndRefCollection(ClassCoverageMonitorName, ClassCoverageReportCollection),
                     reportRepository.count()
@@ -27,7 +27,7 @@ class ClassCoverageMonitorService(
             .map { ConsumerStatus("up", it.t1, it.t2) }
             .doOnNext { log.info("Consumer status [consumer={}, status={}]", ClassCoverageMonitorName, it) }
 
-    override fun trigger(): Mono<ConsumerTriggered> = consumerRepositoryExtended
+    override fun trigger(): ConsumerTriggered = consumerRepositoryExtended
             .countNotConsumedEntityIds(ClassCoverageMonitorName, ReportCollection, "reportUuid", null)
             .doOnNext { scheduleSynchronization() }
             .map { ConsumerTriggered(it) }

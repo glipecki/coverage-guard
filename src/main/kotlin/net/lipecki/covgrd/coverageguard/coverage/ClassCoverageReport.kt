@@ -1,6 +1,5 @@
-package net.lipecki.covgrd.coverageguard.report
+package net.lipecki.covgrd.coverageguard.coverage
 
-import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document

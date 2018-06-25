@@ -17,7 +17,7 @@ class ConsumerRepositoryExtended(val mongoTemplate: MongoTemplate, val consumerR
 
     private val log by logger()
 
-    fun findNotConsumedEntityIds(consumerType: String, refCollection: String, refField: String, limit: Long?): Flux<String> {
+    fun findNotConsumedEntityIds(consumerType: String, refCollection: String, refField: String, limit: Long?): List<String> {
         val operations = getPendingAggregateOperations(consumerType, refCollection, refField)
         limit?.let { operations.add(Aggregation.limit(it)) }
 
@@ -36,7 +36,7 @@ class ConsumerRepositoryExtended(val mongoTemplate: MongoTemplate, val consumerR
         )
     }
 
-    fun countNotConsumedEntityIds(consumerType: String, refCollection: String, refField: String, limit: Long?): Mono<Long> {
+    fun countNotConsumedEntityIds(consumerType: String, refCollection: String, refField: String, limit: Long?): Long {
         log.debug(
                 "Looking for not consumed entities [consumerType: {}, refCollection: {}, refField: {}, limit: {}]",
                 consumerType,
@@ -63,7 +63,7 @@ class ConsumerRepositoryExtended(val mongoTemplate: MongoTemplate, val consumerR
         )
     }
 
-    fun markAsDone(consumerType: String, refCollection: String, refId: String): Mono<ConsumerEntry> = consumerRepository.save(
+    fun markAsDone(consumerType: String, refCollection: String, refId: String): ConsumerEntry = consumerRepository.save(
             ConsumerEntry(
                     consumerType = consumerType,
                     refCollection = refCollection,
@@ -72,7 +72,7 @@ class ConsumerRepositoryExtended(val mongoTemplate: MongoTemplate, val consumerR
             )
     )
 
-    private fun getPendingAggregateOperations(consumerType: String, refCollection: String, refField: String): ArrayList<AggregationOperation> {
+    private fun getPendingAggregateOperations(consumerType: String, refCollection: String, refField: String): List<AggregationOperation> {
         val operations = ArrayList<AggregationOperation>()
 
         operations.add(AggregationOperation(function = {
