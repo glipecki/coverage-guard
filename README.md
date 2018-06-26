@@ -1,0 +1,2 @@
+db.reports.update({uuid: "782e17b5-8bd3-4d7c-9317-1bee72a31e34"}, {$set: {"consumers.ClassCoverageMonitor.status": "DONE"}})
+db.reports.update({uuid: "782e17b5-8bd3-4d7c-9317-1bee72a31e34"}, {$unset: {"consumers.ClassCoverageMonitor": null}})
