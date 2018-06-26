@@ -45,6 +45,7 @@ class AddReportRestControllerTest {
                 multipart("/report/add")
                         .param("format", format)
                         .param("project", project)
+                        .param("branch", branch)
         ).andExpect(
                 status().isBadRequest
         )
@@ -56,6 +57,7 @@ class AddReportRestControllerTest {
                 multipart("/report/add")
                         .file(MockMultipartFile("file", sourceXml.inputStream))
                         .param("project", project)
+                        .param("branch", branch)
         ).andExpect(
                 status().isBadRequest
         )
@@ -67,6 +69,7 @@ class AddReportRestControllerTest {
                 multipart("/report/add")
                         .file(MockMultipartFile("file", sourceXml.inputStream))
                         .param("format", format)
+                        .param("branch", branch)
         ).andExpect(
                 status().isBadRequest
         )
@@ -91,6 +94,8 @@ class AddReportRestControllerTest {
                 multipart("/report/add")
                         .file(MockMultipartFile("file", sourceXml.inputStream))
                         .param("format", format)
+                        .param("project", project)
+                        .param("branch", branch)
         ).andExpect(
                 status().isOk
         ).andReturn().response.contentAsString

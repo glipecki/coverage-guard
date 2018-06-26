@@ -1,32 +1,25 @@
 package net.lipecki.covgrd.coverageguard.report.add.jacoco.xml
 
-import net.lipecki.covgrd.coverageguard.logger
 import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
 import net.lipecki.covgrd.coverageguard.coverage.CoverageStat
 import net.lipecki.covgrd.coverageguard.coverage.CoverageStatValue
 import net.lipecki.covgrd.coverageguard.coverage.MethodCoverage
 import net.lipecki.covgrd.coverageguard.report.add.ReportParser
-import org.springframework.core.ResolvableType
-import org.springframework.core.io.buffer.DataBuffer
-import org.springframework.http.codec.xml.Jaxb2XmlDecoder
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
 import java.io.InputStream
+import java.util.stream.Stream
+import javax.xml.bind.JAXBContext
 
 @Component
 class JacocoXmlReportParser : ReportParser {
 
-    val log by logger()
-
+    val jaxbContext = JAXBContext.newInstance(ReportXml::class.java)!!
+    
     override fun getFormatName(): String = "jacoco/xml"
 
-    override fun parse(content: InputStream): List<ClassCoverage> {
-        return Jaxb2XmlDecoder()
-                .decode(content, ResolvableType.forType(ReportXml::class.java), null, null)
-                .map { it as ReportXml }
-                .doOnNext { log.trace("Parsed report [report={}]", it) }
-                .flatMap { Flux.fromIterable(mapReport(it)) }
-    }
+    override fun parse(content: InputStream): Stream<ClassCoverage> = mapReport(parseReport(content)).stream()
+
+    private fun parseReport(content: InputStream) = jaxbContext.createUnmarshaller().unmarshal(content) as ReportXml
 
     private fun mapReport(report: ReportXml) = report.groups.flatMap { mapGroup(it) }
 

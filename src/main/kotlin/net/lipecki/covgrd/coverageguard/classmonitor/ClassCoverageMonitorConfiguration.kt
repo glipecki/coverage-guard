@@ -1,7 +1,5 @@
 package net.lipecki.covgrd.coverageguard.classmonitor
 
-import net.lipecki.covgrd.coverageguard.consumer.ConsumerRepository
-import net.lipecki.covgrd.coverageguard.consumer.ConsumerRepositoryExtended
 import net.lipecki.covgrd.coverageguard.report.ReportRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,13 +10,7 @@ import java.util.concurrent.Executor
 class ClassCoverageMonitorConfiguration {
 
     @Bean
-    fun classCoverageMonitorService(
-            consumerRepository: ConsumerRepository,
-            consumerRepositoryExtended: ConsumerRepositoryExtended,
-            reportRepository: ReportRepository
-    ) = ClassCoverageMonitorService(
-            consumerRepository,
-            consumerRepositoryExtended,
+    fun classCoverageMonitorService(reportRepository: ReportRepository) = ClassCoverageMonitorService(
             reportRepository,
             classCoverageMonitorSyncExecutor()
     )

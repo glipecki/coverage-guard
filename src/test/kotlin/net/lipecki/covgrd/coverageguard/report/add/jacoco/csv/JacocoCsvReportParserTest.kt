@@ -6,11 +6,9 @@ import net.lipecki.covgrd.coverageguard.coverage.CoverageStatValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.buffer.DataBuffer
-import org.springframework.core.io.buffer.DataBufferUtils
-import org.springframework.core.io.buffer.DefaultDataBufferFactory
-import reactor.core.publisher.Flux
 import java.util.*
+import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class JacocoCsvReportParserTest {
 
@@ -19,16 +17,14 @@ class JacocoCsvReportParserTest {
     @Test
     fun `should parse csv report`() {
         // given
-        val sourceXml = parseXml("reports/one-class-report.csv")
+        val sourceXml = ClassPathResource("reports/one-class-report.csv").inputStream
 
         // when
-        val report = parser.parse(sourceXml)
+        val report = parser.parse(sourceXml).toList()
 
         // then
         assertThat(report[0]).isEqualTo(expectedClassReport())
     }
-
-    private fun parseXml(fileName: String): Flux<DataBuffer> = DataBufferUtils.readInputStream({ ClassPathResource(fileName).inputStream }, DefaultDataBufferFactory(), 100)
 
 
     /**

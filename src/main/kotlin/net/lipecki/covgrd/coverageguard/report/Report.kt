@@ -4,12 +4,13 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
+import kotlin.collections.HashMap
 
 const val ReportCollection = "reports"
 
 enum class ReportState {
 
-    PENDING, IN_PROGRESS, DONE
+    PENDING, DONE
 
 }
 
@@ -17,10 +18,11 @@ enum class ReportState {
 data class Report(
         @Id val id: String? = null,
         @Indexed val uuid: String,
-        val project: String,
-        val branch: String,
+        @Indexed val project: String,
+        @Indexed val branch: String,
         val reportDate: Date,
-        val state: ReportState
+        val state: ReportState,
+        val consumers: Map<String, Object> = HashMap()
 ) {
 
     fun withState(state: ReportState) = Report(

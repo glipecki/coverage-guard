@@ -1,38 +1,31 @@
 package net.lipecki.covgrd.coverageguard.report.add.jacoco.csv
 
-import jdk.internal.util.xml.impl.Input
-import net.lipecki.covgrd.coverageguard.logger
 import net.lipecki.covgrd.coverageguard.coverage.ClassCoverage
 import net.lipecki.covgrd.coverageguard.coverage.CoverageStat
 import net.lipecki.covgrd.coverageguard.coverage.CoverageStatValue
+import net.lipecki.covgrd.coverageguard.logger
 import net.lipecki.covgrd.coverageguard.report.add.ReportParser
-import org.springframework.core.ResolvableType
-import org.springframework.core.codec.StringDecoder
-import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Flux
 import java.io.InputStream
+import java.util.stream.Stream
+import kotlin.streams.asStream
 
 @Component
 class JacocoCsvReportParser : ReportParser {
 
-    val log by logger()
-
     override fun getFormatName(): String = "jacoco/csv"
 
-    override fun parse(content: InputStream): List<ClassCoverage> = StringDecoder.textPlainOnly()
-            .decode(content, ResolvableType.NONE, null, null)
-            .skip(1)
-            .map { it.split(",") }
-            .filter {
-                if (it.size == 13) {
-                    true
-                } else {
-                    log.warn("CSV report line skipped due to missing record columns [line={}]", it)
-                    false
-                }
+    override fun parse(content: InputStream): Stream<ClassCoverage> = content
+            .bufferedReader()
+            .useLines {
+                it
+                        .filter { !it.contains("GROUP") }
+                        .map { it.split(",") }
+                        .filter { it.size == 13 }
+                        .map { parseLine(it) }
+                        .toList()
+                        .stream()
             }
-            .map { parseLine(it) }
 
     /**
      * 0. GROUP
