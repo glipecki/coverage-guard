@@ -11,9 +11,12 @@ const val ClassCoverageMonitorName = "ClassCoverageMonitor"
 class ClassCoverageMonitorService(private val reportRepository: ReportRepository, private val syncTaskExecutor: Executor) : ConsumerService {
 
     override fun getConsumerStatus(): ConsumerStatus = ConsumerStatus(
-            pending = reportRepository.countByConsumersNotContaining(ClassCoverageMonitorName)
+            handled = countByConsumer(true),
+            pending = countByConsumer(false)
     )
 
     override fun trigger(): ConsumerTriggered = ConsumerTriggered(-1)
+
+    private fun countByConsumer(exists: Boolean) = reportRepository.countByConsumerExists(ClassCoverageMonitorName, exists)
 
 }

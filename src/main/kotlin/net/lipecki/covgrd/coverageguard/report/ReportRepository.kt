@@ -7,7 +7,7 @@ interface ReportRepository : MongoRepository<Report, String> {
 
     fun findByConsumersNotContaining(consumerName: String): List<Report>
 
-    @CountQuery("{?#{'consumers.' + #consumerName}: { \$exists: false }}")
-    fun countByConsumersNotContaining(consumerName: String): Long
+    @CountQuery("{?#{'consumers.' + #consumerName}: { \$exists: ?#{#exists} }}")
+    fun countByConsumerExists(consumerName: String, exists: Boolean): Long
 
 }
