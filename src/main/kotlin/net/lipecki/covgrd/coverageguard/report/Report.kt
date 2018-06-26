@@ -22,8 +22,10 @@ data class Report(
         @Indexed val branch: String,
         val reportDate: Date,
         val state: ReportState,
-        val consumers: Map<String, Object> = HashMap()
+        val consumers: MutableMap<String, Any> = HashMap()
 ) {
+
+    val projectQualifiedName: String = "$project:$branch"
 
     fun withState(state: ReportState) = Report(
             id = id,
